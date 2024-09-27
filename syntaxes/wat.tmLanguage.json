@@ -1,0 +1,86 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "WebAssembly Text Format",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#variable"
+    },
+    {
+      "include": "#constant.numeric"
+    },
+    {
+      "include": "#keywords"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.wat",
+          "match": ";;.*$"
+        },
+        {
+          "name": "comment.block.wat",
+          "begin": "\\(;",
+          "end": ";\\)"
+        }
+      ]
+    },
+    "strings": {
+      "name": "string.quoted.double.wat",
+      "begin": "\"",
+      "end": "\"",
+      "patterns": [
+        {
+          "name": "constant.character.escape.wat",
+          "match": "\\\\."
+        }
+      ]
+    },
+    "variable": {
+      "name": "variable.wat",
+      "match": "\\$[a-zA-Z0-9!#$%&'*+\\-./:<=>?@\\\\\\^_`|~]+\\b"
+    },
+    "constant.numeric": {
+      "patterns": [
+        {
+          "name": "constant.numeric.wat.hexadecimal.float",
+          "match": "\\b[+-]?0x[0-9a-fA-F][0-9a-fA-F_]*\\.([0-9a-fA-F][0-9a-fA-F_]*)?([Pp][+-]?[0-9][0-9_]*)?\\b"
+        },
+        {
+          "name": "constant.numeric.wat.decimal.float",
+          "match": "\\b[+-]?[0-9][0-9_]*\\.([0-9][0-9_]*)?([Ee][+-]?[0-9][0-9_]*)?\\b"
+        },
+        {
+          "name": "constant.numeric.wat.hexadecimal",
+          "match": "\\b[+-]?0x[0-9a-fA-F][0-9a-fA-F_]*\\b"
+        },
+        {
+          "name": "constant.numeric.wat.decimal",
+          "match": "\\b[+-]?[0-9][0-9_]*\\b"
+        },
+        {
+          "name": "constant.numeric.wat.inf",
+          "match": "\\binf\\b"
+        },
+        {
+          "name": "constant.numeric.wat.hexadecimal.nan",
+          "match": "\\bnan(0x:[0-9a-fA-F][0-9a-fA-F_]*)?\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [{
+        "name": "keyword.wat",
+        "match": "\\b[a-z][a-z.0-9]*\\b"
+      }]
+    }
+  },
+  "scopeName": "text.wat"
+}

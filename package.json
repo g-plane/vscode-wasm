@@ -1,0 +1,74 @@
+{
+  "name": "wat",
+  "displayName": "WebAssembly Text Format",
+  "description": "Language support of WebAssembly Text Format",
+  "author": "Pig Fang <g-plan@hotmail.com>",
+  "publisher": "gplane",
+  "license": "MIT",
+  "version": "0.0.0",
+  "main": "./dist/extension.js",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "extensionKind": [
+    "workspace"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "wat",
+        "aliases": [
+          "WebAssembly Text Format",
+          "wat"
+        ],
+        "extensions": [
+          ".wat"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "wat",
+        "scopeName": "text.wat",
+        "path": "./syntaxes/wat.tmLanguage.json"
+      }
+    ],
+    "configuration": {
+      "title": "WebAssembly Text Format",
+      "properties": {
+        "wat.executablePath.unix": {
+          "description": "The path to the language server executable on Unix-like OS.",
+          "type": "string",
+          "default": "",
+          "ignoreSync": true
+        },
+        "wat.executablePath.win": {
+          "description": "The path to the language server executable on Windows.",
+          "type": "string",
+          "default": "",
+          "ignoreSync": true
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm lint && pnpm build",
+    "build": "esbuild ./src/extension.ts --bundle --platform=node --outdir=dist --external:vscode",
+    "watch": "pnpm build --watch",
+    "lint": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@gplane/tsconfig": "^6.2.0",
+    "@types/node": "^22.7.3",
+    "@types/vscode": "^1.90.0",
+    "@types/which": "^3.0.4",
+    "esbuild": "^0.24.0",
+    "typescript": "^5.6.2",
+    "vscode-languageclient": "^9.0.1",
+    "which": "^4.0.0"
+  }
+}
