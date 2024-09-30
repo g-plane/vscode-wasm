@@ -1,6 +1,6 @@
 {
   "name": "wat",
-  "displayName": "WebAssembly Text Format",
+  "displayName": "WebAssembly Language Tools",
   "description": "Language support of WebAssembly Text Format",
   "author": "Pig Fang <g-plan@hotmail.com>",
   "publisher": "gplane",
@@ -38,7 +38,7 @@
       }
     ],
     "configuration": {
-      "title": "WebAssembly Text Format",
+      "title": "WebAssembly Language Tools",
       "properties": {
         "wat.executablePath.unix": {
           "description": "The path to the language server executable on Unix-like OS.",
