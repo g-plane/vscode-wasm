@@ -53,7 +53,13 @@
           "ignoreSync": true
         }
       }
-    }
+    },
+    "commands": [
+      {
+        "command": "wat.restart",
+        "title": "WebAssembly: Restart WebAssembly Language Server"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "pnpm lint && pnpm build",
