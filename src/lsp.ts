@@ -29,7 +29,7 @@ export async function setupLspClient(outputChannel: vscode.OutputChannel) {
 }
 
 async function findExecutable() {
-  const configuration = vscode.workspace.getConfiguration('wat')
+  const configuration = vscode.workspace.getConfiguration('wasmLanguageTools')
   const path = os.platform() === 'win32'
     ? (configuration.get<string>('executablePath.win') || 'wat_server.exe')
     : (configuration.get<string>('executablePath.unix') || 'wat_server')

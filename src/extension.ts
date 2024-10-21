@@ -8,7 +8,9 @@ export async function activate(context: vscode.ExtensionContext) {
   const client = await setupLspClient(outputChannel)
   client.start()
   context.subscriptions.push(client)
-  context.subscriptions.push(vscode.commands.registerCommand('wat.restart', () => client.restart()))
+  context.subscriptions.push(
+    vscode.commands.registerCommand('wasmLanguageTools.restart', () => client.restart())
+  )
 }
 
 export function deactivate() {}

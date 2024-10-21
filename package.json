@@ -1,5 +1,5 @@
 {
-  "name": "wat",
+  "name": "wasm-language-tools",
   "displayName": "WebAssembly Language Tools",
   "description": "Language support of WebAssembly Text Format",
   "author": "Pig Fang <g-plan@hotmail.com>",
@@ -40,13 +40,13 @@
     "configuration": {
       "title": "WebAssembly Language Tools",
       "properties": {
-        "wat.executablePath.unix": {
+        "wasmLanguageTools.executablePath.unix": {
           "description": "The path to the language server executable on Unix-like OS.",
           "type": "string",
           "default": "",
           "ignoreSync": true
         },
-        "wat.executablePath.win": {
+        "wasmLanguageTools.executablePath.win": {
           "description": "The path to the language server executable on Windows.",
           "type": "string",
           "default": "",
@@ -56,7 +56,7 @@
     },
     "commands": [
       {
-        "command": "wat.restart",
+        "command": "wasmLanguageTools.restart",
         "title": "WebAssembly: Restart WebAssembly Language Server"
       }
     ]
