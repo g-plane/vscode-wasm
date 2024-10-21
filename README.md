@@ -29,6 +29,10 @@ This extension provides language support of WebAssembly Text Format.
 
 See [CONTRIBUTING.md](.github/CONTRIBUTING.md).
 
+## Credits
+
+The TextMate grammar definition is copied from [wasm-lsp/vscode-wasm](https://github.com/wasm-lsp/vscode-wasm/blob/main/contributes/grammars/wat.json) with some modifications.
+
 ## License
 
 MIT License

@@ -1,97 +1,2092 @@
 {
   "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
   "name": "WebAssembly Text Format",
+  "scopeName": "source.wasm.wat",
+  "fileTypes": [
+    ".wat"
+  ],
   "patterns": [
     {
-      "include": "#comments"
-    },
-    {
-      "include": "#strings"
-    },
-    {
-      "include": "#variable"
-    },
-    {
-      "include": "#constant.numeric"
-    },
-    {
-      "include": "#valueTypes"
-    },
-    {
-      "include": "#keywords"
+      "include": "#PARSE"
     }
   ],
   "repository": {
-    "comments": {
+    "PARSE": {
+      "name": "meta.PARSE.wasm",
       "patterns": [
         {
-          "name": "comment.line.wat",
-          "match": ";;.*$"
+          "include": "#extra"
         },
         {
-          "name": "comment.block.wat",
-          "begin": "\\(;",
-          "end": ";\\)"
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#extra"
+            },
+            {
+              "include": "#module"
+            },
+            {
+              "include": "#moduleField"
+            }
+          ]
         }
       ]
     },
-    "strings": {
-      "name": "string.quoted.double.wat",
+    "alignValue": {
+      "match": "[[:space:]]+(\\balign=(?:[0-9]+(?:_?[0-9]+)*|0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)\\b)",
+      "captures": {
+        "1": {
+          "name": "storage.modifier.wasm"
+        }
+      }
+    },
+    "annotation": {
+      "name": "meta.annotation.wasm",
+      "begin": "\\((?=@)",
+      "beginCaptures": {
+        "0": {
+          "name": "meta.brace.round.annotation.wasm punctuation.definition.tag"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "meta.brace.round.annotation.wasm punctuation.definition.tag"
+        }
+      },
+      "patterns": [
+        {
+          "begin": "@",
+          "beginCaptures": {
+            "0": {
+              "name": "meta.annotation.name.wasm punctuation.definition.tag"
+            }
+          },
+          "end": "(?=\\))",
+          "endCaptures": {
+            "0": {
+              "name": "meta.brace.round.annotation.wasm"
+            }
+          },
+          "patterns": [
+            {
+              "begin": "[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+",
+              "beginCaptures": {
+                "0": {
+                  "name": "meta.annotation.wasm constant.regexp"
+                }
+              },
+              "end": "(?=\\))",
+              "contentName": "comment.wasm",
+              "patterns": [
+                {
+                  "include": "#annotationPart"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "annotationParens": {
+      "name": "meta.annotationParens.wasm",
+      "begin": "\\(",
+      "end": "\\)",
+      "patterns": [
+        {
+          "include": "#annotationPart"
+        }
+      ]
+    },
+    "annotationPart": {
+      "name": "meta.annotationPart.wasm",
+      "patterns": [
+        {
+          "include": "#comment"
+        },
+        {
+          "include": "#annotationParens"
+        },
+        {
+          "match": "[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+"
+        },
+        {
+          "begin": "\"",
+          "end": "(\")|((?:[^\\\\\\n])$)",
+          "patterns": [
+            {
+              "name": "constant.character.escape.wasm"
+            }
+          ]
+        }
+      ]
+    },
+    "blockBlock": {
+      "name": "meta.blockBlock.wasm",
+      "begin": "\\bblock\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.wasm"
+        }
+      },
+      "end": "\\bend\\b",
+      "endCaptures": {
+        "0": {
+          "name": "keyword.control.wasm"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "name": "variable.other.wasm",
+          "match": "\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+"
+        },
+        {
+          "include": "#typeUse"
+        },
+        {
+          "include": "#funcTypeParams"
+        },
+        {
+          "include": "#funcTypeResults"
+        },
+        {
+          "include": "#instrList"
+        }
+      ]
+    },
+    "blockComment": {
+      "name": "meta.blockComment.wasm comment.block.wasm",
+      "begin": "(\\(;)",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.definition.comment.wasm"
+        }
+      },
+      "end": "(;\\))",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.comment.wasm"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#blockComment"
+        }
+      ]
+    },
+    "blockIf": {
+      "name": "meta.blockIf.wasm",
+      "begin": "\\bif\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.wasm"
+        }
+      },
+      "end": "\\bend\\b",
+      "endCaptures": {
+        "0": {
+          "name": "keyword.control.wasm"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "name": "variable.other.wasm",
+          "match": "\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+"
+        },
+        {
+          "include": "#typeUse"
+        },
+        {
+          "include": "#funcTypeParams"
+        },
+        {
+          "include": "#funcTypeResults"
+        },
+        {
+          "include": "#instrList"
+        }
+      ]
+    },
+    "blockLoop": {
+      "name": "meta.blockLoop.wasm",
+      "begin": "\\bloop\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.wasm"
+        }
+      },
+      "end": "\\bend\\b",
+      "endCaptures": {
+        "0": {
+          "name": "keyword.control.wasm"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "name": "variable.other.wasm",
+          "match": "\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+"
+        },
+        {
+          "include": "#typeUse"
+        },
+        {
+          "include": "#funcTypeParams"
+        },
+        {
+          "include": "#funcTypeResults"
+        },
+        {
+          "include": "#instrList"
+        }
+      ]
+    },
+    "comment": {
+      "name": "meta.comment.wasm",
+      "patterns": [
+        {
+          "include": "#lineComment"
+        },
+        {
+          "include": "#blockComment"
+        }
+      ]
+    },
+    "elemType": {
+      "name": "meta.elemType.wasm storage.type.wasm",
+      "match": "\\bfuncref\\b"
+    },
+    "exportDesc": {
+      "name": "meta.exportDesc.wasm",
+      "patterns": [
+        {
+          "include": "#exportDescFunc"
+        },
+        {
+          "include": "#exportDescTable"
+        },
+        {
+          "include": "#exportDescMemory"
+        },
+        {
+          "include": "#exportDescGlobal"
+        }
+      ]
+    },
+    "exportDescFunc": {
+      "name": "meta.exportDescFunc.wasm",
+      "begin": "\\bfunc\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.func.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "match": "(?:(?!0x)[0-9]+(?:_?[0-9]+)*|0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)|(?:\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+)"
+        }
+      ]
+    },
+    "exportDescGlobal": {
+      "name": "meta.exportDescGlobal.wasm",
+      "begin": "\\bglobal(?!\\.)\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.global.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "match": "(?:(?!0x)[0-9]+(?:_?[0-9]+)*|0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)|(?:\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+)"
+        }
+      ]
+    },
+    "exportDescMemory": {
+      "name": "meta.exportDescMemory.wasm",
+      "begin": "\\bmemory(?!\\.)\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.memory.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "match": "(?:(?!0x)[0-9]+(?:_?[0-9]+)*|0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)|(?:\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+)"
+        }
+      ]
+    },
+    "exportDescTable": {
+      "name": "meta.exportDescTable.wasm",
+      "begin": "\\btable\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.table.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "match": "(?:(?!0x)[0-9]+(?:_?[0-9]+)*|0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)|(?:\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+)"
+        }
+      ]
+    },
+    "expr": {
+      "name": "meta.expr.wasm",
+      "patterns": [
+        {
+          "include": "#exprPlain"
+        },
+        {
+          "include": "#exprCall"
+        },
+        {
+          "include": "#exprBlock"
+        },
+        {
+          "include": "#exprLoop"
+        },
+        {
+          "include": "#exprIf"
+        },
+        {
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#expr"
+            }
+          ]
+        }
+      ]
+    },
+    "exprBlock": {
+      "name": "meta.exprBlock.wasm",
+      "begin": "\\bblock\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "name": "variable.other.wasm",
+          "match": "\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+"
+        },
+        {
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#extra"
+            },
+            {
+              "include": "#typeUse"
+            },
+            {
+              "include": "#funcTypeParams"
+            },
+            {
+              "include": "#funcTypeResults"
+            },
+            {
+              "include": "#expr"
+            }
+          ]
+        },
+        {
+          "include": "#instrList"
+        }
+      ]
+    },
+    "exprCall": {
+      "name": "meta.exprCall.wasm",
+      "patterns": [
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bcall_indirect\\b"
+        }
+      ]
+    },
+    "exprIf": {
+      "name": "meta.exprIf.wasm",
+      "patterns": [
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bif\\b"
+        },
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\belse|then\\b"
+        }
+      ]
+    },
+    "exprLoop": {
+      "name": "meta.exprLoop.wasm",
+      "patterns": [
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bloop\\b"
+        }
+      ]
+    },
+    "exprPlain": {
+      "name": "meta.exprPlain.wasm",
+      "patterns": [
+        {
+          "include": "#instrPlain"
+        },
+        {
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#expr"
+            }
+          ]
+        }
+      ]
+    },
+    "extra": {
+      "name": "meta.extra.wasm",
+      "patterns": [
+        {
+          "include": "#comment"
+        },
+        {
+          "include": "#annotation"
+        }
+      ]
+    },
+    "funcLocals": {
+      "name": "meta.funcLocals.wasm",
+      "begin": "\\blocal(?!\\.)\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.local.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "name": "variable.parameter.local.wasm",
+          "match": "\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+"
+        },
+        {
+          "include": "#valueType"
+        }
+      ]
+    },
+    "funcType": {
+      "name": "meta.funcType.wasm",
+      "patterns": [
+        {
+          "include": "#funcTypeParams"
+        },
+        {
+          "include": "#funcTypeResults"
+        }
+      ]
+    },
+    "funcTypeParams": {
+      "name": "meta.funcTypeParams.wasm",
+      "begin": "\\bparam\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.param.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "include": "#valueType"
+        },
+        {
+          "name": "entity.name.type.alias.wasm",
+          "match": "[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+"
+        }
+      ]
+    },
+    "funcTypeResults": {
+      "name": "meta.funcTypeResults.wasm",
+      "begin": "\\bresult\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.param.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "include": "#valueType"
+        }
+      ]
+    },
+    "globalType": {
+      "name": "meta.globalType.wasm",
+      "patterns": [
+        {
+          "include": "#globalTypeImm"
+        },
+        {
+          "include": "#globalTypeMut"
+        }
+      ]
+    },
+    "globalTypeImm": {
+      "name": "meta.globalTypeImm.wasm",
+      "patterns": [
+        {
+          "include": "#valueType"
+        }
+      ]
+    },
+    "globalTypeMut": {
+      "name": "meta.globalTypeMut.wasm",
+      "patterns": [
+        {
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#extra"
+            },
+            {
+              "begin": "(?<=\\()",
+              "end": "\\bmut\\b",
+              "endCaptures": {
+                "0": {
+                  "name": "storage.modifier.wasm"
+                }
+              },
+              "patterns": [
+                {
+                  "include": "#extra"
+                },
+                {
+                  "include": "#valueType"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "importDesc": {
+      "name": "meta.importDesc.wasm",
+      "begin": "\\(",
+      "beginCaptures": {
+        "0": {
+          "name": "meta.brace.round.wasm"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "meta.brace.round.wasm"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#importDescFuncType"
+        },
+        {
+          "include": "#importDescGlobalType"
+        },
+        {
+          "include": "#importDescMemoryType"
+        },
+        {
+          "include": "#importDescTableType"
+        }
+      ]
+    },
+    "importDescFuncType": {
+      "name": "meta.importDescFuncType.wasm",
+      "begin": "\\bfunc\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.func.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "name": "entity.name.function.wasm",
+          "match": "\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+"
+        },
+        {
+          "begin": "\\(",
+          "end": "\\)",
+          "patterns": [
+            {
+              "include": "#funcType"
+            },
+            {
+              "include": "#typeUse"
+            }
+          ]
+        }
+      ]
+    },
+    "importDescGlobalType": {
+      "name": "meta.importDescGlobalType.wasm",
+      "begin": "\\bglobal(?!\\.)\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.global.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "name": "variable.other.global.wasm",
+          "match": "\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+"
+        },
+        {
+          "include": "#globalType"
+        }
+      ]
+    },
+    "importDescMemoryType": {
+      "name": "meta.importDescMemoryType.wasm",
+      "begin": "\\bmemory(?!\\.)\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.memory.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "name": "variable.other.memory.wasm",
+          "match": "\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+"
+        },
+        {
+          "include": "#memoryType"
+        }
+      ]
+    },
+    "importDescTableType": {
+      "name": "meta.importDescTableType.wasm",
+      "begin": "\\btable\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.table.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "name": "variable.other.table.wasm",
+          "match": "\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+"
+        },
+        {
+          "include": "#tableType"
+        }
+      ]
+    },
+    "inlineExport": {
+      "name": "meta.inlineExport.wasm",
+      "begin": "\\bexport\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.export.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "name": "variable.other.readwrite.alias.wasm",
+          "begin": "\"",
+          "end": "(\")|((?:[^\\\\\\n])$)",
+          "patterns": [
+            {
+              "match": "\\\\([0-9A-Fa-f]{2}|u\\{[0-9A-Fa-f]+\\}|[\\\\'\\\\\"ntr]|$)"
+            }
+          ]
+        }
+      ]
+    },
+    "inlineImport": {
+      "name": "meta.inlineImport.wasm",
+      "begin": "\\bimport\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.import.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "include": "#inlineImportNames"
+        }
+      ]
+    },
+    "inlineImportNames": {
+      "name": "meta.inlineImportNames.wasm",
+      "patterns": [
+        {
+          "begin": "(?:(?<=(?:[^[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+]import|^import))(?![0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+))",
+          "end": "(?<=\")",
+          "patterns": [
+            {
+              "include": "#extra"
+            },
+            {
+              "name": "entity.name.type.module.wasm",
+              "begin": "\"",
+              "end": "(\")|((?:[^\\\\\\n])$)",
+              "patterns": [
+                {
+                  "match": "\\\\([0-9A-Fa-f]{2}|u\\{[0-9A-Fa-f]+\\}|[\\\\'\\\\\"ntr]|$)"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "variable.other.readwrite.alias.wasm",
+          "begin": "\"",
+          "end": "(\")|((?:[^\\\\\\n])$)",
+          "patterns": [
+            {
+              "match": "\\\\([0-9A-Fa-f]{2}|u\\{[0-9A-Fa-f]+\\}|[\\\\'\\\\\"ntr]|$)"
+            }
+          ]
+        }
+      ]
+    },
+    "instr": {
+      "name": "meta.instr.wasm",
+      "patterns": [
+        {
+          "include": "#instrPlain"
+        },
+        {
+          "include": "#instrCall"
+        },
+        {
+          "include": "#instrBlock"
+        },
+        {
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#expr"
+            }
+          ]
+        }
+      ]
+    },
+    "instrBlock": {
+      "name": "meta.instrBlock.wasm",
+      "patterns": [
+        {
+          "include": "#blockBlock"
+        },
+        {
+          "include": "#blockLoop"
+        },
+        {
+          "include": "#blockIf"
+        }
+      ]
+    },
+    "instrCall": {
+      "name": "meta.instrCall.wasm",
+      "patterns": []
+    },
+    "instrList": {
+      "name": "meta.instrList.wasm",
+      "patterns": [
+        {
+          "include": "#instrListCall"
+        },
+        {
+          "include": "#instr"
+        }
+      ]
+    },
+    "instrPlain": {
+      "name": "meta.instrPlain.wasm",
+      "patterns": [
+        {
+          "include": "#instrPlainUnreachable"
+        },
+        {
+          "include": "#instrPlainNop"
+        },
+        {
+          "include": "#instrPlainDrop"
+        },
+        {
+          "include": "#instrPlainSelect"
+        },
+        {
+          "include": "#instrPlainBr"
+        },
+        {
+          "include": "#instrPlainBrIf"
+        },
+        {
+          "include": "#instrPlainBrTable"
+        },
+        {
+          "include": "#instrPlainReturn"
+        },
+        {
+          "include": "#instrPlainLocalGet"
+        },
+        {
+          "include": "#instrPlainLocalSet"
+        },
+        {
+          "include": "#instrPlainLocalTee"
+        },
+        {
+          "include": "#instrPlainGlobalGet"
+        },
+        {
+          "include": "#instrPlainGlobalSet"
+        },
+        {
+          "include": "#instrPlainMemorySize"
+        },
+        {
+          "include": "#instrPlainMemoryGrow"
+        },
+        {
+          "include": "#instrPlainConst"
+        },
+        {
+          "include": "#instrPlainTest"
+        },
+        {
+          "include": "#instrPlainCompare"
+        },
+        {
+          "include": "#instrPlainUnary"
+        },
+        {
+          "include": "#instrPlainBinary"
+        },
+        {
+          "include": "#instrPlainConvert"
+        },
+        {
+          "include": "#instrPlainLoad"
+        },
+        {
+          "include": "#instrPlainStore"
+        },
+        {
+          "include": "#instrPlainCall"
+        }
+      ]
+    },
+    "instrPlainBinary": {
+      "name": "meta.instrPlainBinary.wasm",
+      "patterns": [
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\b(?:i(?:32|64)|f(?:32|64))\\b(?<![\\.])\\.(?![\\.])(?:add|sub|mul)"
+        },
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bi(?:32|64)\\b(?<![\\.])\\.(?![\\.])(?:and|or|xor|shl|rotl|rotr)"
+        },
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bi(?:32|64)\\b(?<![\\.])\\.(?![\\.])\\b(?:div|rem|shr)_[su]\\b"
+        },
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bf(?:32|64)\\b(?<![\\.])\\.(?![\\.])(?:add|sub|mul|div|min|max|copysign)"
+        }
+      ]
+    },
+    "instrPlainBr": {
+      "name": "meta.instrPlainBr.wasm",
+      "begin": "\\bbr\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.wasm"
+        }
+      },
+      "end": "(?:(?!0x)[0-9]+(?:_?[0-9]+)*|0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)|(?:\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+)",
+      "endCaptures": {
+        "0": {
+          "name": "variable.other.constant"
+        }
+      }
+    },
+    "instrPlainBrIf": {
+      "name": "meta.instrPlainBrIf.wasm",
+      "begin": "\\bbr_if\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.wasm"
+        }
+      },
+      "end": "(?:(?!0x)[0-9]+(?:_?[0-9]+)*|0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)|(?:\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+)",
+      "endCaptures": {
+        "0": {
+          "name": "variable.other.constant"
+        }
+      }
+    },
+    "instrPlainBrTable": {
+      "name": "meta.instrPlainBrTable.wasm",
+      "begin": "\\bbr_table\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.wasm"
+        }
+      },
+      "end": "(?![[:space:]]|$|(?:(?!0x)[0-9]+(?:_?[0-9]+)*|0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)|(?:\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+))",
+      "patterns": [
+        {
+          "name": "variable.other.constant",
+          "match": "(?:(?!0x)[0-9]+(?:_?[0-9]+)*|0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)|(?:\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+)"
+        }
+      ]
+    },
+    "instrPlainCall": {
+      "name": "meta.instrPlainCall.wasm",
+      "begin": "\\bcall\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.wasm"
+        }
+      },
+      "end": "(?:(?!0x)[0-9]+(?:_?[0-9]+)*|0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)|(?:\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+)",
+      "endCaptures": {
+        "0": {
+          "name": "variable.other.constant"
+        }
+      }
+    },
+    "instrPlainCompare": {
+      "name": "meta.instrPlainCompare.wasm",
+      "patterns": [
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\b(?:i(?:32|64)|f(?:32|64))\\b(?<![\\.])\\.(?![\\.])\\b(?:eq|ne)\\b"
+        },
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bi(?:32|64)\\b(?<![\\.])\\.(?![\\.])\\b(?:lt|le|gt|ge)_[su]\\b"
+        },
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bf(?:32|64)\\b(?<![\\.])\\.(?![\\.])\\b(?:lt|le|gt|ge)\\b"
+        }
+      ]
+    },
+    "instrPlainConvert": {
+      "name": "meta.instrPlainConvert.wasm",
+      "patterns": [
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bi32\\b(?<![\\.])\\.(?![\\.])\\bwrap_i64\\b"
+        },
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bi64\\b(?<![\\.])\\.(?![\\.])\\bextend_i32_[su]\\b"
+        },
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bf32\\b(?<![\\.])\\.(?![\\.])\\bdemote_f64\\b"
+        },
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bf64\\b(?<![\\.])\\.(?![\\.])\\bpromote_f32\\b"
+        },
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bi(?:32|64)\\b(?<![\\.])\\.(?![\\.])\\btrunc(?:_sat)?_f(?:32|64)_[su]\\b"
+        },
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bf(?:32|64)\\b(?<![\\.])\\.(?![\\.])\\bconvert_i(?:32|64)_[su]\\b"
+        },
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bi32\\b(?<![\\.])\\.(?![\\.])\\breinterpret_f32\\b"
+        },
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bi64\\b(?<![\\.])\\.(?![\\.])\\breinterpret_f64\\b"
+        },
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bf32\\b(?<![\\.])\\.(?![\\.])\\breinterpret_i32\\b"
+        },
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bf64\\b(?<![\\.])\\.(?![\\.])\\breinterpret_i64\\b"
+        }
+      ]
+    },
+    "instrPlainConst": {
+      "name": "meta.instrPlainConst.wasm",
+      "begin": "\\b(?:i(?:32|64)|f(?:32|64))\\b(?<![\\.])\\.(?![\\.])\\bconst\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.wasm"
+        }
+      },
+      "end": "((?:[+-])?\\b(?:0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*(?:\\.(?:[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)?)?(?:[Pp](?:[+-])?[0-9]+(?:_?[0-9]+)*)?|nan:0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*(?:\\.(?:[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)?)?(?:[Pp](?:[+-])?[0-9]+(?:_?[0-9]+)*)?)\\b)|((?:[+-])?[0-9]+(?:_?[0-9]+)*(?:\\.(?:[0-9]+(?:_?[0-9]+)*)?)?(?:[Ee](?:[+-])?[0-9]+(?:_?[0-9]+)*)?)|((?:[+-])?\\b(?:inf|nan)\\b)|((?:[+-])?0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)|((?:[+-])?[0-9]+(?:_?[0-9]+)*)",
+      "endCaptures": {
+        "1": {
+          "name": "constant.numeric.float.hexadecimal.wasm"
+        },
+        "2": {
+          "name": "constant.numeric.float.decimal.wasm"
+        },
+        "3": {
+          "name": "constant.numeric.float.wasm"
+        },
+        "4": {
+          "name": "constant.numeric.integer.hexadecimal.wasm"
+        },
+        "5": {
+          "name": "constant.numeric.integer.decimal.wasm"
+        }
+      }
+    },
+    "instrPlainDrop": {
+      "name": "meta.instrPlainDrop.wasm keyword.control.wasm",
+      "match": "\\bdrop\\b"
+    },
+    "instrPlainGlobalGet": {
+      "name": "meta.instrPlainGlobalGet.wasm",
+      "begin": "\\bglobal\\.get\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.wasm"
+        }
+      },
+      "end": "(?:(?!0x)[0-9]+(?:_?[0-9]+)*|0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)|(?:\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+)",
+      "endCaptures": {
+        "0": {
+          "name": "variable.other.constant"
+        }
+      }
+    },
+    "instrPlainGlobalSet": {
+      "name": "meta.instrPlainGlobalSet.wasm",
+      "begin": "\\bglobal\\.set\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.wasm"
+        }
+      },
+      "end": "(?:(?!0x)[0-9]+(?:_?[0-9]+)*|0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)|(?:\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+)",
+      "endCaptures": {
+        "0": {
+          "name": "variable.other.constant"
+        }
+      }
+    },
+    "instrPlainLoad": {
+      "name": "meta.instrPlainLoad.wasm",
+      "patterns": [
+        {
+          "begin": "\\bi64\\b(?<![\\.])\\.(?![\\.])\\bload32_[su]\\b",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.control.wasm"
+            }
+          },
+          "end": "(?!\\G)|(?![[:space:]])",
+          "patterns": [
+            {
+              "include": "#offsetValue"
+            },
+            {
+              "include": "#alignValue"
+            }
+          ]
+        },
+        {
+          "begin": "\\bi(?:32|64)\\b(?<![\\.])\\.(?![\\.])\\bload(?:8|16)_[su]\\b",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.control.wasm"
+            }
+          },
+          "end": "(?!\\G)|(?![[:space:]])",
+          "patterns": [
+            {
+              "include": "#offsetValue"
+            },
+            {
+              "include": "#alignValue"
+            }
+          ]
+        },
+        {
+          "begin": "\\b(?:i(?:32|64)|f(?:32|64))\\b(?<![\\.])\\.(?![\\.])\\bload\\b",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.control.wasm"
+            }
+          },
+          "end": "(?!\\G)|(?![[:space:]])",
+          "patterns": [
+            {
+              "include": "#offsetValue"
+            },
+            {
+              "include": "#alignValue"
+            }
+          ]
+        }
+      ]
+    },
+    "instrPlainLocalGet": {
+      "name": "meta.instrPlainLocalGet.wasm",
+      "begin": "\\blocal\\.get\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.wasm"
+        }
+      },
+      "end": "(?:(?!0x)[0-9]+(?:_?[0-9]+)*|0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)|(?:\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+)",
+      "endCaptures": {
+        "0": {
+          "name": "variable.other.constant"
+        }
+      }
+    },
+    "instrPlainLocalSet": {
+      "name": "meta.instrPlainLocalSet.wasm",
+      "begin": "\\blocal\\.set\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.wasm"
+        }
+      },
+      "end": "(?:(?!0x)[0-9]+(?:_?[0-9]+)*|0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)|(?:\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+)",
+      "endCaptures": {
+        "0": {
+          "name": "variable.other.constant"
+        }
+      }
+    },
+    "instrPlainLocalTee": {
+      "name": "meta.instrPlainLocalTee.wasm",
+      "begin": "\\blocal\\.tee\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.wasm"
+        }
+      },
+      "end": "(?:(?!0x)[0-9]+(?:_?[0-9]+)*|0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)|(?:\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+)",
+      "endCaptures": {
+        "0": {
+          "name": "variable.other.constant"
+        }
+      }
+    },
+    "instrPlainMemorySize": {
+      "name": "meta.instrPlainMemorySize.wasm keyword.control.wasm",
+      "match": "\\bmemory\\.size\\b"
+    },
+    "instrPlainMemoryGrow": {
+      "name": "meta.instrPlainMemoryGrow.wasm keyword.control.wasm",
+      "match": "\\bmemory\\.grow\\b"
+    },
+    "instrPlainNop": {
+      "name": "meta.instrPlainNop.wasm keyword.control.wasm",
+      "match": "\\bnop\\b"
+    },
+    "instrPlainReturn": {
+      "name": "meta.instrPlainReturn.wasm keyword.control.wasm",
+      "match": "\\breturn\\b"
+    },
+    "instrPlainSelect": {
+      "name": "meta.instrPlainSelect.wasm keyword.control.wasm",
+      "match": "\\bselect\\b"
+    },
+    "instrPlainStore": {
+      "name": "meta.instrPlainStore.wasm",
+      "patterns": [
+        {
+          "begin": "\\bi64\\b(?<![\\.])\\.(?![\\.])\\bstore32\\b",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.control.wasm"
+            }
+          },
+          "end": "(?!\\G)|(?![[:space:]])",
+          "patterns": [
+            {
+              "include": "#offsetValue"
+            },
+            {
+              "include": "#alignValue"
+            }
+          ]
+        },
+        {
+          "begin": "\\bi(?:32|64)\\b(?<![\\.])\\.(?![\\.])\\bstore(?:8|16)\\b",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.control.wasm"
+            }
+          },
+          "end": "(?!\\G)|(?![[:space:]])",
+          "patterns": [
+            {
+              "include": "#offsetValue"
+            },
+            {
+              "include": "#alignValue"
+            }
+          ]
+        },
+        {
+          "begin": "\\b(?:i(?:32|64)|f(?:32|64))\\b(?<![\\.])\\.(?![\\.])\\bstore\\b",
+          "beginCaptures": {
+            "0": {
+              "name": "keyword.control.wasm"
+            }
+          },
+          "end": "(?!\\G)|(?![[:space:]])",
+          "patterns": [
+            {
+              "include": "#offsetValue"
+            },
+            {
+              "include": "#alignValue"
+            }
+          ]
+        }
+      ]
+    },
+    "instrPlainTest": {
+      "name": "meta.instrPlainTest.wasm keyword.control.wasm",
+      "match": "\\b(?:i(?:32|64)|f(?:32|64))\\b(?<![\\.])\\.(?![\\.])\\beqz\\b"
+    },
+    "instrPlainUnary": {
+      "name": "meta.instrPlainUnary.wasm",
+      "patterns": [
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bi(?:32|64)\\b(?<![\\.])\\.(?![\\.])\\b(?:clz|ctz|popcnt)\\b"
+        },
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bi(?:32|64)\\b(?<![\\.])\\.(?![\\.])\\b(?:extend(?:8|16)_s)\\b"
+        },
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bi64\\b(?<![\\.])\\.(?![\\.])\\bextend32_s\\b"
+        },
+        {
+          "name": "keyword.control.wasm",
+          "match": "\\bf(?:32|64)\\b(?<![\\.])\\.(?![\\.])\\b(?:neg|abs|sqrt|ceil|floor|trunc|nearest)\\b"
+        }
+      ]
+    },
+    "instrPlainUnreachable": {
+      "name": "meta.instrPlainUnreachable.wasm keyword.control.wasm",
+      "match": "\\bunreachable\\b"
+    },
+    "limits": {
+      "name": "meta.limits.wasm constant.numeric.integer",
+      "match": "(?!0x)[0-9]+(?:_?[0-9]+)*|0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*"
+    },
+    "lineComment": {
+      "name": "meta.comment.line.wasm",
+      "begin": "(?:(^[ \\t]+))?((;;))",
+      "beginCaptures": {
+        "1": {
+          "name": "punctuation.whitespace.comment.leading.wasm"
+        },
+        "2": {
+          "name": "comment.line.double-semicolon.wasm"
+        },
+        "3": {
+          "name": "punctuation.definition.comment.wasm"
+        }
+      },
+      "end": "(?=$)",
+      "contentName": "comment.line.double-semicolon.wasm"
+    },
+    "memoryFieldsData": {
+      "name": "meta.memoryFieldsData.wasm",
+      "begin": "\\bdata\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "storage.type.memory.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "include": "#string"
+        }
+      ]
+    },
+    "memoryFieldsType": {
+      "name": "meta.memoryFieldsType.wasm",
+      "patterns": [
+        {
+          "include": "#inlineImport"
+        },
+        {
+          "include": "#memoryType"
+        }
+      ]
+    },
+    "memoryType": {
+      "name": "meta.memoryType.wasm",
+      "patterns": [
+        {
+          "include": "#limits"
+        }
+      ]
+    },
+    "module": {
+      "name": "meta.module.wasm",
+      "begin": "\\bmodule\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "storage.type.module.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "include": "#moduleField"
+        },
+        {
+          "begin": "[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+",
+          "beginCaptures": {
+            "0": {
+              "name": "entity.name.type.module.wasm"
+            }
+          },
+          "end": "(?=\\))",
+          "patterns": [
+            {
+              "include": "#extra"
+            },
+            {
+              "include": "#moduleField"
+            }
+          ]
+        }
+      ]
+    },
+    "moduleField": {
+      "name": "meta.moduleField.wasm",
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "include": "#moduleFieldData"
+        },
+        {
+          "include": "#moduleFieldElem"
+        },
+        {
+          "include": "#moduleFieldExport"
+        },
+        {
+          "include": "#moduleFieldFunc"
+        },
+        {
+          "include": "#moduleFieldGlobal"
+        },
+        {
+          "include": "#moduleFieldImport"
+        },
+        {
+          "include": "#moduleFieldMemory"
+        },
+        {
+          "include": "#moduleFieldStart"
+        },
+        {
+          "include": "#moduleFieldTable"
+        },
+        {
+          "include": "#moduleFieldType"
+        }
+      ]
+    },
+    "moduleFieldData": {
+      "name": "meta.moduleFieldData.wasm",
+      "begin": "\\bdata\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "storage.type.data.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "name": "variable.other.constant entity.name.data.wasm",
+          "match": "(?:(?!0x)[0-9]+(?:_?[0-9]+)*|0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)|(?:\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+)"
+        },
+        {
+          "include": "#offset"
+        },
+        {
+          "include": "#string"
+        }
+      ]
+    },
+    "moduleFieldElem": {
+      "name": "meta.moduleFieldElem.wasm",
+      "begin": "\\belem\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "storage.type.elem.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "include": "#offset"
+        },
+        {
+          "name": "variable.other.wasm",
+          "match": "(?:(?!0x)[0-9]+(?:_?[0-9]+)*|0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)|(?:\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+)"
+        }
+      ]
+    },
+    "moduleFieldExport": {
+      "name": "meta.moduleFieldExport.wasm",
+      "begin": "\\bexport\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.export.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "name": "variable.other.readwrite.alias.wasm",
+          "begin": "\"",
+          "end": "(\")|((?:[^\\\\\\n])$)",
+          "patterns": [
+            {
+              "match": "\\\\([0-9A-Fa-f]{2}|u\\{[0-9A-Fa-f]+\\}|[\\\\'\\\\\"ntr]|$)"
+            }
+          ]
+        },
+        {
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#exportDesc"
+            }
+          ]
+        }
+      ]
+    },
+    "moduleFieldFunc": {
+      "name": "meta.moduleFieldFunc.wasm",
+      "begin": "\\bfunc\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "storage.type.function.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "name": "entity.name.function.wasm",
+          "match": "\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+"
+        },
+        {
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#inlineExport"
+            },
+            {
+              "include": "#inlineImport"
+            },
+            {
+              "include": "#typeUse"
+            },
+            {
+              "include": "#funcTypeParams"
+            },
+            {
+              "include": "#funcTypeResults"
+            },
+            {
+              "include": "#funcLocals"
+            },
+            {
+              "include": "#expr"
+            }
+          ]
+        },
+        {
+          "include": "#instrList"
+        }
+      ]
+    },
+    "moduleFieldGlobal": {
+      "name": "meta.moduleFieldGlobal.wasm",
+      "begin": "\\bglobal(?!\\.)\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "storage.type.global.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "name": "variable.other.global.wasm",
+          "match": "\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+"
+        },
+        {
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#extra"
+            },
+            {
+              "include": "#inlineExport"
+            },
+            {
+              "include": "#inlineImport"
+            }
+          ]
+        },
+        {
+          "include": "#globalType"
+        },
+        {
+          "include": "#expr"
+        }
+      ]
+    },
+    "moduleFieldImport": {
+      "name": "meta.moduleFieldImport.wasm",
+      "begin": "\\bimport\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.import.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "include": "#inlineImportNames"
+        },
+        {
+          "include": "#importDesc"
+        }
+      ]
+    },
+    "moduleFieldMemory": {
+      "name": "meta.moduleFieldMemory.wasm",
+      "begin": "\\bmemory(?!\\.)\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "storage.type.memory.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "name": "variable.other.memory.wasm",
+          "match": "\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+"
+        },
+        {
+          "include": "#memoryFieldsType"
+        },
+        {
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#inlineExport"
+            },
+            {
+              "include": "#memoryFieldsData"
+            }
+          ]
+        }
+      ]
+    },
+    "moduleFieldStart": {
+      "name": "meta.moduleFieldStart.wasm",
+      "begin": "\\bstart\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.start.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "begin": "[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+",
+          "beginCaptures": {
+            "0": {
+              "name": "entity.name.function.wasm"
+            }
+          },
+          "end": "(?=\\))"
+        }
+      ]
+    },
+    "moduleFieldTable": {
+      "name": "meta.moduleFieldTable.wasm",
+      "begin": "\\btable\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "storage.type.table.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "name": "variable.other.table.wasm",
+          "match": "\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+"
+        },
+        {
+          "patterns": [
+            {
+              "include": "#limits"
+            },
+            {
+              "include": "#elemType"
+            }
+          ]
+        },
+        {
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#extra"
+            },
+            {
+              "include": "#inlineExport"
+            },
+            {
+              "include": "#tableFieldsElem"
+            },
+            {
+              "include": "#tableFieldsType"
+            }
+          ]
+        }
+      ]
+    },
+    "moduleFieldType": {
+      "name": "meta.moduleFieldType.wasm",
+      "begin": "\\btype\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "storage.type.type.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "name": "entity.name.type.alias.wasm",
+          "match": "\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+"
+        },
+        {
+          "include": "#typeField"
+        }
+      ]
+    },
+    "name": {
+      "name": "meta.name.wasm",
+      "patterns": [
+        {
+          "include": "#string"
+        }
+      ]
+    },
+    "offset": {
+      "name": "meta.offset.wasm",
+      "begin": "\\(",
+      "beginCaptures": {
+        "0": {
+          "name": "meta.brace.round.wasm"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "meta.brace.round.wasm"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#offsetConstExpr"
+        },
+        {
+          "include": "#offsetExpr"
+        }
+      ]
+    },
+    "offsetConstExpr": {
+      "name": "meta.offsetConstExpr.wasm",
+      "begin": "\\boffset\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "storage.type.type.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "include": "#instr"
+        }
+      ]
+    },
+    "offsetExpr": {
+      "name": "meta.offsetExpr.wasm",
+      "patterns": [
+        {
+          "include": "#expr"
+        }
+      ]
+    },
+    "offsetValue": {
+      "begin": "[[:space:]]+(\\boffset=(?:[0-9]+(?:_?[0-9]+)*|0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)\\b)",
+      "end": "(?!\\G)|(?![[:space:]])",
+      "beginCaptures": {
+        "1": {
+          "name": "storage.modifier.wasm"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#alignValue"
+        }
+      ]
+    },
+    "string": {
+      "name": "meta.string.wasm string.quoted.double.wasm",
       "begin": "\"",
-      "end": "\"",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.wasm"
+        }
+      },
+      "end": "(\")|((?:[^\\\\\\n])$)",
+      "endCaptures": {
+        "1": {
+          "name": "punctuation.definition.string.end.wasm"
+        },
+        "2": {
+          "name": "invalid.illegal.newline.wasm"
+        }
+      },
       "patterns": [
         {
-          "name": "constant.character.escape.wat",
-          "match": "\\\\."
+          "include": "#stringCharacterEscape"
         }
       ]
     },
-    "variable": {
-      "name": "variable.wat",
-      "match": "\\$[a-zA-Z0-9!#$%&'*+\\-./:<=>?@\\\\\\^_`|~]+\\b"
+    "stringCharacterEscape": {
+      "name": "meta.stringCharacterEscape.wasm constant.character.escape.wasm",
+      "match": "\\\\([0-9A-Fa-f]{2}|u\\{[0-9A-Fa-f]+\\}|[\\\\'\\\\\"ntr]|$)"
     },
-    "constant.numeric": {
+    "tableFieldsElem": {
+      "name": "meta.tableFieldsElem.wasm",
+      "begin": "\\belem\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "storage.type.elem.wasm"
+        }
+      },
+      "end": "(?=\\))",
       "patterns": [
         {
-          "name": "constant.numeric.wat.hexadecimal.float",
-          "match": "\\b[+-]?0x[0-9a-fA-F][0-9a-fA-F_]*\\.([0-9a-fA-F][0-9a-fA-F_]*)?([Pp][+-]?[0-9][0-9_]*)?\\b"
+          "include": "#extra"
         },
         {
-          "name": "constant.numeric.wat.decimal.float",
-          "match": "\\b[+-]?[0-9][0-9_]*\\.([0-9][0-9_]*)?([Ee][+-]?[0-9][0-9_]*)?\\b"
-        },
-        {
-          "name": "constant.numeric.wat.hexadecimal",
-          "match": "\\b[+-]?0x[0-9a-fA-F][0-9a-fA-F_]*\\b"
-        },
-        {
-          "name": "constant.numeric.wat.decimal",
-          "match": "\\b[+-]?[0-9][0-9_]*\\b"
-        },
-        {
-          "name": "constant.numeric.wat.inf",
-          "match": "\\binf\\b"
-        },
-        {
-          "name": "constant.numeric.wat.hexadecimal.nan",
-          "match": "\\bnan(0x:[0-9a-fA-F][0-9a-fA-F_]*)?\\b"
+          "name": "variable.other.constant",
+          "match": "(?:(?!0x)[0-9]+(?:_?[0-9]+)*|0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)|(?:\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+)"
         }
       ]
     },
-    "valueTypes": {
+    "tableFieldsType": {
+      "name": "meta.tableFieldsType.wasm",
       "patterns": [
         {
-          "name": "storage.type.wat",
-          "match": "\\b(?:i32|i64|f32|f64|v128|funcref|externref)\\b"
+          "include": "#inlineImport"
+        },
+        {
+          "include": "#tableType"
         }
       ]
     },
-    "keywords": {
-      "patterns": [{
-        "name": "keyword.wat",
-        "match": "\\b[a-z][a-z.0-9]*\\b"
-      }]
+    "tableType": {
+      "name": "meta.tableType.wasm",
+      "patterns": [
+        {
+          "include": "#limits"
+        },
+        {
+          "include": "#elemType"
+        }
+      ]
+    },
+    "typeField": {
+      "name": "meta.typeField.wasm",
+      "begin": "\\(",
+      "beginCaptures": {
+        "0": {
+          "name": "meta.brace.round.wasm"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "meta.brace.round.wasm"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "begin": "(?<=\\()",
+          "end": "\\bfunc\\b",
+          "endCaptures": {
+            "0": {
+              "name": "storage.type.function.wasm"
+            }
+          }
+        },
+        {
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#extra"
+            },
+            {
+              "include": "#funcType"
+            }
+          ]
+        }
+      ]
+    },
+    "typeUse": {
+      "name": "meta.typeUse.wasm",
+      "begin": "\\btype\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "storage.type.type.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "name": "entity.name.type.alias.wasm",
+          "match": "(?:(?!0x)[0-9]+(?:_?[0-9]+)*|0x[0-9A-Fa-f]+(?:_?[0-9A-Fa-f]+)*)|(?:\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+)"
+        }
+      ]
+    },
+    "valueType": {
+      "name": "meta.valueType.wasm storage.valueType.wasm",
+      "match": "[fi](?:32|64)"
     }
-  },
-  "scopeName": "text.wat"
+  }
 }

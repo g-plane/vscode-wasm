@@ -38,7 +38,7 @@
     "grammars": [
       {
         "language": "wat",
-        "scopeName": "text.wat",
+        "scopeName": "source.wasm.wat",
         "path": "./syntaxes/wat.tmLanguage.json"
       }
     ],
