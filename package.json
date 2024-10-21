@@ -10,9 +10,14 @@
   "engines": {
     "vscode": "^1.90.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/g-plane/vscode-wasm.git"
+  },
   "categories": [
     "Programming Languages"
   ],
+  "keywords": ["wasm", "webassembly", "wat", "language server", "intellisense"],
   "extensionKind": [
     "workspace"
   ],
