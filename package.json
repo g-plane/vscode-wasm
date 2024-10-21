@@ -2,7 +2,7 @@
   "name": "wasm-language-tools",
   "displayName": "WebAssembly Language Tools",
   "description": "Language support of WebAssembly Text Format",
-  "author": "Pig Fang <g-plan@hotmail.com>",
+  "author": "Pig Fang <g-plane@hotmail.com>",
   "publisher": "gplane",
   "license": "MIT",
   "version": "0.0.0",
