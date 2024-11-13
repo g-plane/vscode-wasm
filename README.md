@@ -21,6 +21,8 @@ This extension provides language support of WebAssembly Text Format.
 
 ### Code Action
 
+### Formatting
+
 ### Semantic Highlighting
 
 ### Call Hierarchy
