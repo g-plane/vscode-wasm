@@ -57,6 +57,18 @@
           "default": "fmt-ignore",
           "scope": "resource"
         },
+        "wasmLanguageTools.lint.unused": {
+          "description": "Lint for detecting unused items.",
+          "type": "string",
+          "enum": ["allow", "warn", "deny"],
+          "enumDescriptions": [
+            "Don't report unused items.",
+            "Report unused items as warnings.",
+            "Report unused items as errors."
+          ],
+          "default": "warn",
+          "scope": "resource"
+        },
         "wasmLanguageTools.executablePath.unix": {
           "description": "The path to the language server executable on Unix-like OS.",
           "type": "string",
