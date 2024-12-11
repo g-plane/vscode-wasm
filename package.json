@@ -45,6 +45,18 @@
     "configuration": {
       "title": "WebAssembly Language Tools",
       "properties": {
+        "wasmLanguageTools.format.formatComments": {
+          "description": "Control whether whitespace should be inserted at the beginning and end of comments.",
+          "type": "boolean",
+          "default": false,
+          "scope": "resource"
+        },
+        "wasmLanguageTools.format.ignoreCommentDirective": {
+          "description": "Text directive for ignoring formatting specific module or module field.",
+          "type": "string",
+          "default": "fmt-ignore",
+          "scope": "resource"
+        },
         "wasmLanguageTools.executablePath.unix": {
           "description": "The path to the language server executable on Unix-like OS.",
           "type": "string",
@@ -57,6 +69,12 @@
           "default": "",
           "ignoreSync": true
         }
+      }
+    },
+    "configurationDefaults": {
+      "[wat]": {
+        "editor.tabSize": 2,
+        "editor.insertSpaces": true
       }
     },
     "commands": [
