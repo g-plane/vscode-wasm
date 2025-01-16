@@ -18,7 +18,13 @@
   "categories": [
     "Programming Languages"
   ],
-  "keywords": ["wasm", "webassembly", "wat", "language server", "intellisense"],
+  "keywords": [
+    "wasm",
+    "webassembly",
+    "wat",
+    "language server",
+    "intellisense"
+  ],
   "extensionKind": [
     "workspace"
   ],
@@ -61,28 +67,48 @@
         "wasmLanguageTools.lint.unused": {
           "description": "Lint for detecting unused items.",
           "type": "string",
-          "enum": ["allow", "hint", "warn", "deny"],
+          "enum": [
+            "allow",
+            "hint",
+            "warn",
+            "deny"
+          ],
           "default": "warn",
           "scope": "resource"
         },
         "wasmLanguageTools.lint.shadow": {
           "description": "Lint for detecting shadowing.",
           "type": "string",
-          "enum": ["allow", "hint", "warn", "deny"],
+          "enum": [
+            "allow",
+            "hint",
+            "warn",
+            "deny"
+          ],
           "default": "warn",
           "scope": "resource"
         },
         "wasmLanguageTools.lint.implicitModule": {
           "description": "Lint for top-level module fields without declaring a module.",
           "type": "string",
-          "enum": ["allow", "hint", "warn", "deny"],
+          "enum": [
+            "allow",
+            "hint",
+            "warn",
+            "deny"
+          ],
           "default": "allow",
           "scope": "resource"
         },
         "wasmLanguageTools.lint.unreachable": {
           "description": "Lint for detecting unreachable code.",
           "type": "string",
-          "enum": ["allow", "hint", "warn", "deny"],
+          "enum": [
+            "allow",
+            "hint",
+            "warn",
+            "deny"
+          ],
           "default": "hint",
           "scope": "resource"
         },
@@ -125,6 +151,8 @@
     "@types/vscode": "^1.90.0",
     "@types/which": "^3.0.4",
     "esbuild": "^0.24.0",
+    "got": "^14.4.5",
+    "jszip": "^3.10.1",
     "typescript": "^5.7.2",
     "vscode-languageclient": "^9.0.1",
     "which": "^5.0.0"
