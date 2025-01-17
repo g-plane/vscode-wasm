@@ -136,6 +136,10 @@
       {
         "command": "wasmLanguageTools.restart",
         "title": "WebAssembly: Restart WebAssembly Language Server"
+      },
+      {
+        "command": "wasmLanguageTools.downloadServer",
+        "title": "WebAssembly: Download Latest WebAssembly Language Tools"
       }
     ]
   },
