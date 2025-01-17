@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+## v1.2.0
+
+- Support downloading server manually.
+- Support updating server automatically.
+
 ## v1.1.0
 
 - Support downloading server binary from GitHub Releases.
