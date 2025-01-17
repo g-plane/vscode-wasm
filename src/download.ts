@@ -1,3 +1,4 @@
+import { spawn } from 'cross-spawn'
 import got from 'got'
 import jszip from 'jszip'
 import { createWriteStream } from 'node:fs'
@@ -7,7 +8,11 @@ import * as path from 'node:path'
 import { pipeline } from 'node:stream/promises'
 import * as vscode from 'vscode'
 
-export async function download(context: vscode.ExtensionContext, downloadedExePath: string) {
+export async function download(
+  context: vscode.ExtensionContext,
+  downloadedExePath: string,
+  beforeWriteExe?: () => Promise<void>,
+) {
   const isWindows = os.platform() === 'win32'
   const zipPath = path.join(os.tmpdir(), 'wat_server.zip')
   await vscode.window.withProgress({
@@ -36,6 +41,7 @@ export async function download(context: vscode.ExtensionContext, downloadedExePa
 
   const zip = await jszip.loadAsync(await fs.readFile(zipPath))
   await fs.mkdir(context.globalStorageUri.fsPath, { recursive: true })
+  await beforeWriteExe?.()
   await pipeline(
     zip.file(isWindows ? 'wat_server.exe' : 'wat_server')!.nodeStream(),
     createWriteStream(downloadedExePath)
@@ -56,5 +62,22 @@ function getReleaseURL() {
         : 'https://github.com/g-plane/wasm-language-tools/releases/latest/download/wat_server-arm-macos.zip'
     case 'win32':
       return 'https://github.com/g-plane/wasm-language-tools/releases/latest/download/wat_server-x86_64-windows.zip'
+  }
+}
+
+export async function checkUpdate(downloadedExePath: string) {
+  const process = spawn(downloadedExePath, ['-v'])
+  const current = await new Promise<string>((resolve, reject) => {
+    let stdout = ''
+    process.stdout.setEncoding('utf8')
+    process.stdout.on('data', (data) => stdout += data)
+    process.stdout.on('end', () => resolve(stdout.trim().replace(/^wat_server /, '')))
+    process.stdout.on('error', reject)
+  })
+  const { tag_name: latest } = await got.get(
+    'https://api.github.com/repos/g-plane/wasm-language-tools/releases/latest'
+  ).json<{ tag_name: string }>()
+  if (current !== latest) {
+    vscode.commands.executeCommand('wasmLanguageTools.downloadServer')
   }
 }

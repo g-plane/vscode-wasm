@@ -22,11 +22,12 @@ export async function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(vscode.commands.registerCommand(
     'wasmLanguageTools.downloadServer',
     async () => {
-      if (client) {
-        await client.stop()
-        await client.dispose()
-      }
-      await download(context, getDownloadedExePath(context))
+      await download(context, getDownloadedExePath(context), async () => {
+        if (client) {
+          await client.stop()
+          await client.dispose()
+        }
+      })
       client = await setupLspClient(context, outputChannel)
       if (client) {
         client.start()

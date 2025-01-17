@@ -8,7 +8,7 @@ import {
   type ServerOptions,
 } from 'vscode-languageclient/node'
 import which from 'which'
-import { download } from './download.js'
+import { checkUpdate, download } from './download.js'
 
 export async function setupLspClient(
   context: vscode.ExtensionContext,
@@ -52,6 +52,7 @@ async function findExecutable(context: vscode.ExtensionContext) {
   const downloadedExePath = getDownloadedExePath(context)
   try {
     await fs.stat(downloadedExePath)
+    void checkUpdate(downloadedExePath)
     return downloadedExePath
   } catch {
     // fall through
