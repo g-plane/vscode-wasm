@@ -1,6 +1,5 @@
 import * as fs from 'node:fs/promises'
 import * as os from 'node:os'
-import * as path from 'node:path'
 import * as vscode from 'vscode'
 import {
   LanguageClient,
@@ -8,7 +7,6 @@ import {
   type ServerOptions,
 } from 'vscode-languageclient/node'
 import which from 'which'
-import { checkUpdate, download } from './download.js'
 
 export async function setupLspClient(
   context: vscode.ExtensionContext,
@@ -49,29 +47,20 @@ async function findExecutable(context: vscode.ExtensionContext) {
     // fall through
   }
 
-  const downloadedExePath = getDownloadedExePath(context)
+  const bundledExePath = getBundledExePath(context)
   try {
-    await fs.stat(downloadedExePath)
-    void checkUpdate(downloadedExePath)
-    return downloadedExePath
+    await fs.stat(bundledExePath)
+    return bundledExePath
   } catch {
     // fall through
   }
 
-  const answer = await vscode.window.showWarningMessage(
-    `Could not find executable "${exePath}". Would you like to download it?`,
-    'Yes',
-    'No'
+  vscode.window.showErrorMessage(
+    `No prebuilt wat_server executable exists for your platform; please install it manually.`
   )
-  if (answer === 'Yes') {
-    await download(context, downloadedExePath)
-    return downloadedExePath
-  }
 }
 
-export function getDownloadedExePath(context: vscode.ExtensionContext) {
-  const isWindows = os.platform() === 'win32'
-  // For example, on Linux, it will be
-  // ~/.config/Code/User/globalStorage/gplane.wasm-language-tools/wat_server
-  return path.join(context.globalStorageUri.fsPath, isWindows ? 'wat_server.exe' : 'wat_server')
+function getBundledExePath(context: vscode.ExtensionContext) {
+  const name = os.platform() === 'win32' ? 'wat_server.exe' : 'wat_server'
+  return vscode.Uri.joinPath(context.extensionUri, 'bin', name).fsPath
 }

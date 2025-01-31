@@ -1,6 +1,5 @@
 import * as vscode from 'vscode'
-import { download } from './download.js'
-import { getDownloadedExePath, setupLspClient } from './lsp.js'
+import { setupLspClient } from './lsp.js'
 
 export async function activate(context: vscode.ExtensionContext) {
   const outputChannel = vscode.window.createOutputChannel('WebAssembly Language Tools')
@@ -19,22 +18,6 @@ export async function activate(context: vscode.ExtensionContext) {
       }
     })
   )
-  context.subscriptions.push(vscode.commands.registerCommand(
-    'wasmLanguageTools.downloadServer',
-    async () => {
-      await download(context, getDownloadedExePath(context), async () => {
-        if (client) {
-          await client.stop()
-          await client.dispose()
-        }
-      })
-      client = await setupLspClient(context, outputChannel)
-      if (client) {
-        client.start()
-        context.subscriptions.push(client)
-      }
-    }
-  ))
 }
 
 export function deactivate() {}
