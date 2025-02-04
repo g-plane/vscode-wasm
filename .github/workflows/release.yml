@@ -23,6 +23,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - uses: pnpm/action-setup@v4
+        with:
+          version: latest
+          run_install: true
       - run: npx bumpp -y ${{ github.event.inputs.semver }}
       - run: ./package.sh
       - run: npx @vscode/vsce publish --packagePath *.vsix
