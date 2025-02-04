@@ -1,3 +1,4 @@
+.github/
 .vscode/**
 .vscode-test-web/**
 src/**
@@ -18,3 +19,4 @@ esbuild.js
 .editorconfig
 pnpm-lock.yaml
 dprint.json
+package.sh
