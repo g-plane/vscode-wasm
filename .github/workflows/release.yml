@@ -20,8 +20,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          git config user.name "Pig Fang"
-          git config user.email ${{ secrets.GIT_EMAIL }}
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       - run: npx bumpp -y ${{ github.event.inputs.semver }}
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
