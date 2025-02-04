@@ -22,4 +22,4 @@ jobs:
       - run: |
           git config user.name "Pig Fang"
           git config user.email ${{ secrets.GIT_EMAIL }}
-      - run: pnpx bumpp -y ${{ github.event.inputs.semver }}
+      - run: npx bumpp -y ${{ github.event.inputs.semver }}
