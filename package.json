@@ -136,10 +136,6 @@
       {
         "command": "wasmLanguageTools.restart",
         "title": "WebAssembly: Restart WebAssembly Language Server"
-      },
-      {
-        "command": "wasmLanguageTools.downloadServer",
-        "title": "WebAssembly: Download Latest WebAssembly Language Tools"
       }
     ]
   },
@@ -151,14 +147,10 @@
   },
   "devDependencies": {
     "@gplane/tsconfig": "^6.2.0",
-    "@types/cross-spawn": "^6.0.6",
     "@types/node": "^22.7.3",
     "@types/vscode": "^1.90.0",
     "@types/which": "^3.0.4",
-    "cross-spawn": "^7.0.6",
     "esbuild": "^0.24.0",
-    "got": "^14.4.5",
-    "jszip": "^3.10.1",
     "typescript": "^5.7.2",
     "vscode-languageclient": "^9.0.1",
     "which": "^5.0.0"
