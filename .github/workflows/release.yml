@@ -1,20 +1,25 @@
 name: release
 
 on:
-  push:
-    tags:
-      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      semver:
+        description: 'Semantic version'
+        required: true
+        options:
+          - 'major'
+          - 'minor'
+          - 'patch'
 
 permissions:
   contents: write
 
 jobs:
-  publish:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
-      - run: ./package.sh
-      - run: pnpx @vscode/vsce publish --packagePath *.vsix
-        env:
-          VSCE_PAT: ${{ secrets.VSCE_PAT }}
+      - run: |
+          git config user.name "Pig Fang"
+          git config user.email ${{ secrets.GIT_EMAIL }}
+      - run: pnpx bumpp -y ${{ github.event.inputs.semver }}
