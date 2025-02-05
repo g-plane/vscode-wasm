@@ -1,11 +1,14 @@
 import * as vscode from 'vscode'
+import type { LanguageClient } from 'vscode-languageclient/node.js'
 import { setupLspClient } from './lsp.js'
+
+let client: LanguageClient | undefined
 
 export async function activate(context: vscode.ExtensionContext) {
   const outputChannel = vscode.window.createOutputChannel('WebAssembly Language Tools')
   context.subscriptions.push(outputChannel)
 
-  let client = await setupLspClient(context, outputChannel)
+  client = await setupLspClient(context, outputChannel)
   if (client) {
     client.start()
     context.subscriptions.push(client)
@@ -20,4 +23,6 @@ export async function activate(context: vscode.ExtensionContext) {
   )
 }
 
-export function deactivate() {}
+export function deactivate() {
+  client?.stop()
+}
