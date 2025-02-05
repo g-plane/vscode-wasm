@@ -5,7 +5,7 @@
   "author": "Pig Fang <g-plane@hotmail.com>",
   "publisher": "gplane",
   "license": "MIT",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "main": "./dist/extension.js",
   "icon": "logo.png",
   "engines": {
