@@ -123,6 +123,17 @@
           "type": "string",
           "default": "",
           "ignoreSync": true
+        },
+        "wat.trace.server": {
+          "description": "Traces the communication between VS Code and the language server.",
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "scope": "window"
         }
       }
     },
