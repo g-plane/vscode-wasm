@@ -1,6 +1,6 @@
 # WebAssembly Language Tools for VS Code
 
-Visual Studio Code extension of WebAssembly Language Tools.
+Visual Studio Code extension of [WebAssembly Language Tools](https://github.com/g-plane/wasm-language-tools).
 This extension provides language support of WebAssembly Text Format.
 
 ## Features
