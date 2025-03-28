@@ -100,6 +100,18 @@
           "default": "allow",
           "scope": "resource"
         },
+        "wasmLanguageTools.lint.multiModules": {
+          "description": "Lint for detecting multiple modules in a single file.",
+          "type": "string",
+          "enum": [
+            "allow",
+            "hint",
+            "warn",
+            "deny"
+          ],
+          "default": "deny",
+          "scope": "resource"
+        },
         "wasmLanguageTools.lint.unreachable": {
           "description": "Lint for detecting unreachable code.",
           "type": "string",
@@ -110,6 +122,30 @@
             "deny"
           ],
           "default": "hint",
+          "scope": "resource"
+        },
+        "wasmLanguageTools.lint.needlessMut": {
+          "description": "Lint for detecting mutable globals that are never mutated.",
+          "type": "string",
+          "enum": [
+            "allow",
+            "hint",
+            "warn",
+            "deny"
+          ],
+          "default": "warn",
+          "scope": "resource"
+        },
+        "wasmLanguageTools.lint.multiMemories": {
+          "description": "Lint for detecting multiple memories in one module.",
+          "type": "string",
+          "enum": [
+            "allow",
+            "hint",
+            "warn",
+            "deny"
+          ],
+          "default": "allow",
           "scope": "resource"
         },
         "wasmLanguageTools.executablePath.unix": {
