@@ -49,6 +49,22 @@
         "path": "./syntaxes/wat.tmLanguage.json"
       }
     ],
+    "semanticTokenModifiers": [
+      {
+        "id": "mutable",
+        "description": "Style for mutable globals, fields and etc."
+      }
+    ],
+    "semanticTokenScopes": [
+      {
+        "language": "wat",
+        "scopes": {
+          "*.mutable": [
+            "markup.underline"
+          ]
+        }
+      }
+    ],
     "configuration": {
       "title": "WebAssembly Language Tools",
       "properties": {
