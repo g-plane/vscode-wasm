@@ -200,7 +200,15 @@
         "command": "wasmLanguageTools.restart",
         "title": "WebAssembly: Restart WebAssembly Language Server"
       }
-    ]
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "wasmLanguageTools.restart",
+          "when": "editorLangId == wat"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "pnpm lint && pnpm build",
