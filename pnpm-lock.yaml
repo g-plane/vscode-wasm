@@ -24,8 +24,8 @@ importers:
         specifier: ^0.24.0
         version: 0.24.0
       typescript:
-        specifier: ^5.7.2
-        version: 5.7.2
+        specifier: ^5.9.3
+        version: 5.9.3
       vscode-languageclient:
         specifier: ^9.0.1
         version: 9.0.1
@@ -215,8 +215,8 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
-  typescript@5.7.2:
-    resolution: {integrity: sha512-i5t66RHxDvVN40HfDd1PsEThGNnlMCMT3jMUuoh9/0TaqWevNontacunWyN02LA9/fIbEWlcHZcgTKb9QoaLfg==}
+  typescript@5.9.3:
+    resolution: {integrity: sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -367,7 +367,7 @@ snapshots:
 
   semver@7.6.3: {}
 
-  typescript@5.7.2: {}
+  typescript@5.9.3: {}
 
   undici-types@6.19.8: {}
 

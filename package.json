@@ -222,7 +222,7 @@
     "@types/vscode": "^1.90.0",
     "@types/which": "^3.0.4",
     "esbuild": "^0.24.0",
-    "typescript": "^5.7.2",
+    "typescript": "^5.9.3",
     "vscode-languageclient": "^9.0.1",
     "which": "^5.0.0"
   }
