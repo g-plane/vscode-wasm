@@ -4,12 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       semver:
-        description: 'Semantic version'
+        description: "Semantic version"
         required: true
         options:
-          - 'major'
-          - 'minor'
-          - 'patch'
+          - "major"
+          - "minor"
+          - "patch"
 
 permissions:
   contents: write

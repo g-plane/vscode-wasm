@@ -19,7 +19,7 @@ export async function activate(context: vscode.ExtensionContext) {
       if (client?.isRunning()) {
         await client.restart()
       }
-    })
+    }),
   )
 }
 

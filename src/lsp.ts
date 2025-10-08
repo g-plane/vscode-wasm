@@ -2,9 +2,9 @@ import * as fs from 'node:fs/promises'
 import * as os from 'node:os'
 import * as vscode from 'vscode'
 import {
-  LanguageClient,
   type LanguageClientOptions,
   type ServerOptions,
+  LanguageClient,
 } from 'vscode-languageclient/node'
 import which from 'which'
 
@@ -56,7 +56,7 @@ async function findExecutable(context: vscode.ExtensionContext) {
   }
 
   vscode.window.showErrorMessage(
-    `No prebuilt wat_server executable exists for your platform; please install it manually.`
+    `No prebuilt wat_server executable exists for your platform; please install it manually.`,
   )
 }
 
