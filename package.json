@@ -170,18 +170,6 @@
           "default": "warn",
           "scope": "resource"
         },
-        "wasmLanguageTools.lint.multiMemories": {
-          "description": "Lint for detecting multiple memories in one module.",
-          "type": "string",
-          "enum": [
-            "allow",
-            "hint",
-            "warn",
-            "deny"
-          ],
-          "default": "allow",
-          "scope": "resource"
-        },
         "wasmLanguageTools.lint.needlessTryTable": {
           "description": "Lint for detecting `try_table` block without catch clauses.",
           "type": "string",
