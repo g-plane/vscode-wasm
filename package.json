@@ -68,6 +68,12 @@
     "configuration": {
       "title": "WebAssembly Language Tools",
       "properties": {
+        "wasmLanguageTools.format.splitClosingParens": {
+          "description": "Control whether closing parentheses should be splitted into different lines.",
+          "type": "boolean",
+          "default": false,
+          "scope": "resource"
+        },
         "wasmLanguageTools.format.formatComments": {
           "description": "Control whether whitespace should be inserted at the beginning and end of comments.",
           "type": "boolean",
@@ -140,6 +146,18 @@
           "default": "hint",
           "scope": "resource"
         },
+        "wasmLanguageTools.lint.deprecated": {
+          "description": "Lint for deprecated usage.",
+          "type": "string",
+          "enum": [
+            "allow",
+            "hint",
+            "warn",
+            "deny"
+          ],
+          "default": "warn",
+          "scope": "resource"
+        },
         "wasmLanguageTools.lint.needlessMut": {
           "description": "Lint for detecting mutable globals that are never mutated.",
           "type": "string",
@@ -162,6 +180,30 @@
             "deny"
           ],
           "default": "allow",
+          "scope": "resource"
+        },
+        "wasmLanguageTools.lint.needlessTryTable": {
+          "description": "Lint for detecting `try_table` block without catch clauses.",
+          "type": "string",
+          "enum": [
+            "allow",
+            "hint",
+            "warn",
+            "deny"
+          ],
+          "default": "warn",
+          "scope": "resource"
+        },
+        "wasmLanguageTools.lint.uselessCatch": {
+          "description": "Lint for detecting useless catch clauses.",
+          "type": "string",
+          "enum": [
+            "allow",
+            "hint",
+            "warn",
+            "deny"
+          ],
+          "default": "warn",
           "scope": "resource"
         },
         "wasmLanguageTools.inlayHint.types": {
