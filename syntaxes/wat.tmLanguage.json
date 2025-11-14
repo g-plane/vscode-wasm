@@ -1515,6 +1515,9 @@
           "include": "#moduleFieldTable"
         },
         {
+          "include": "#moduleFieldTag"
+        },
+        {
           "include": "#moduleFieldType"
         }
       ]
@@ -1860,6 +1863,56 @@
             },
             {
               "include": "#tableFieldsType"
+            }
+          ]
+        }
+      ]
+    },
+    "moduleFieldTag": {
+      "name": "meta.moduleFieldTag.wasm",
+      "begin": "\\btag\\b",
+      "beginCaptures": {
+        "0": {
+          "name": "storage.type.tag.wasm"
+        }
+      },
+      "end": "(?=\\))",
+      "patterns": [
+        {
+          "include": "#extra"
+        },
+        {
+          "name": "variable.other.tag.wasm",
+          "match": "\\$[0-9A-Za-z!#$%&'*+-./:<=>?@\\^_'|~]+"
+        },
+        {
+          "begin": "\\(",
+          "beginCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "meta.brace.round.wasm"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#inlineExport"
+            },
+            {
+              "include": "#inlineImport"
+            },
+            {
+              "include": "#typeUse"
+            },
+            {
+              "include": "#funcTypeParams"
+            },
+            {
+              "include": "#funcTypeResults"
             }
           ]
         }
