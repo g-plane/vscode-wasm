@@ -1,13 +1,20 @@
 [working-directory: 'binding']
-build-binding:
+build-binding target:
   cargo build --target=wasm32-unknown-unknown --release
-  wasm-bindgen --out-dir=../bin --target=web --omit-default-module-path target/wasm32-unknown-unknown/release/wat_service_binding.wasm
+  wasm-bindgen --out-dir=pkg --target={{ if target == "node" { "nodejs" } else { "web" } }} \
+    --omit-default-module-path target/wasm32-unknown-unknown/release/wat_service_binding.wasm
 
-build-server: build-binding
-  pnpm esbuild ./src/server/browser.ts --bundle --minify --outfile=dist/server-browser.js
+build-server target: (build-binding target)
+  pnpm esbuild ./src/server/{{target}}.ts --bundle --minify --platform={{target}} --outfile=dist/server-{{target}}.js
+  cp ./binding/pkg/wat_service_binding_bg.wasm ./dist/wat_service_binding_bg.wasm
 
-build-electron:
-  pnpm esbuild ./src/electron.ts --bundle --minify --platform=node --outdir=dist --external:vscode
+build-node:
+  pnpm esbuild ./src/node.ts --bundle --minify --platform=node --outdir=dist --external:vscode
 
-build-web:
+build-web: (build-server "browser")
   pnpm esbuild ./src/web.ts --bundle --minify --format=cjs --outdir=dist --external:vscode
+
+clean:
+  rm -rf bin
+  rm -rf binding/pkg
+  rm -rf dist

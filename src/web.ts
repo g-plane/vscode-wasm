@@ -8,7 +8,7 @@ export function activate(context: vscode.ExtensionContext) {
   const outputChannel = vscode.window.createOutputChannel('WebAssembly Language Tools')
   context.subscriptions.push(outputChannel)
 
-  const wasmPath = vscode.Uri.joinPath(context.extensionUri, './bin/wat_service_binding_bg.wasm')
+  const wasmPath = vscode.Uri.joinPath(context.extensionUri, './dist/wat_service_binding_bg.wasm')
     .toString()
   outputChannel.appendLine(`Using server: ${wasmPath}`)
 

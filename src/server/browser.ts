@@ -3,7 +3,7 @@ import {
   BrowserMessageWriter,
   createConnection,
 } from 'vscode-languageserver/browser'
-import init, { LanguageService } from '../../bin/wat_service_binding.js'
+import init, { LanguageService } from '../../binding/pkg/wat_service_binding.js'
 import { bindConnection } from './common.js'
 
 self.addEventListener('message', async (event) => {

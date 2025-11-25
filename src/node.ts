@@ -1,5 +1,10 @@
 import * as vscode from 'vscode'
-import { type Location, type Position, LanguageClient } from 'vscode-languageclient/node'
+import {
+  type Location,
+  type Position,
+  type ServerOptions,
+  LanguageClient,
+} from 'vscode-languageclient/node'
 import { findExecutable } from './executable.js'
 import { showReferences } from './languages.js'
 
@@ -9,15 +14,11 @@ export async function activate(context: vscode.ExtensionContext) {
   const outputChannel = vscode.window.createOutputChannel('WebAssembly Language Tools')
   context.subscriptions.push(outputChannel)
 
+  let serverOptions: ServerOptions
   const executablePath = await findExecutable(context)
-  if (!executablePath) {
-    return
-  }
-
-  outputChannel.appendLine(`Using server: ${executablePath}`)
-  client = new LanguageClient(
-    'wat',
-    {
+  if (executablePath) {
+    outputChannel.appendLine(`Using server: ${executablePath}`)
+    serverOptions = {
       run: {
         command: executablePath,
         args: [],
@@ -26,7 +27,17 @@ export async function activate(context: vscode.ExtensionContext) {
         command: executablePath,
         args: ['--debug'],
       },
-    },
+    }
+  } else {
+    outputChannel.appendLine(
+      `Using server: ${context.asAbsolutePath('dist/wat_service_binding_bg.wasm')}`,
+    )
+    serverOptions = { module: context.asAbsolutePath('dist/server-node.js') }
+  }
+
+  client = new LanguageClient(
+    'wat',
+    serverOptions,
     {
       documentSelector: [{ language: 'wat' }],
       outputChannel,

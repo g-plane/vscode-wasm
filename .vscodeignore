@@ -21,5 +21,3 @@ pnpm-lock.yaml
 dprint.json
 package.sh
 binding/**
-bin/*.js
-bin/*.d.ts
