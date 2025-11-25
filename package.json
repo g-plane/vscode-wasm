@@ -269,6 +269,7 @@
     "@types/vscode": "^1.90.0",
     "@types/which": "^3.0.4",
     "@vscode/test-web": "^0.0.76",
+    "@vscode/vsce": "^3.7.1",
     "esbuild": "^0.24.0",
     "typescript": "^5.9.3",
     "vscode-languageclient": "^9.0.1",

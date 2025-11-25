@@ -13,20 +13,22 @@ build-server target: (build-binding target)
 build-node:
   esbuild ./src/node.ts --bundle --minify --platform=node --outdir=dist --external:vscode
 
-build-web: (build-server 'browser')
+build-web:
   esbuild ./src/web.ts --bundle --minify --format=cjs --outdir=dist --external:vscode
 
 clean:
   rm -rf bin binding/pkg dist
 
 package-node: clean (build-server 'node') build-node
-  pnpx @vscode/vsce package
+  touch dist/web.js
+  vsce package
 
-package-web: clean build-web
-  pnpx @vscode/vsce package --target web
+package-web: clean (build-server 'browser') build-web
+  touch dist/node.js
+  vsce package --target web
 
 package platform vscode-platform: clean build-node
   wget https://github.com/g-plane/wasm-language-tools/releases/latest/download/wat_server-{{platform}}.zip
   unzip -o wat_server-{{platform}}.zip -d bin
   rm wat_server-{{platform}}.zip
-  pnpx @vscode/vsce package --target {{vscode-platform}}
+  vsce package --target {{vscode-platform}}

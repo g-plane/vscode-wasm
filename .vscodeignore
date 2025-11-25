@@ -19,5 +19,5 @@ esbuild.js
 .editorconfig
 pnpm-lock.yaml
 dprint.json
-package.sh
+Justfile
 binding/**
