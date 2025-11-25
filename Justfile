@@ -12,19 +12,19 @@ build-server target: (build-binding target)
 
 build-node:
   esbuild ./src/node.ts --bundle --minify --platform=node --outdir=dist --external:vscode
+  touch dist/web.js
 
 build-web:
   esbuild ./src/web.ts --bundle --minify --format=cjs --outdir=dist --external:vscode
+  touch dist/node.js
 
 clean:
   rm -rf bin binding/pkg dist
 
 package-node: clean (build-server 'node') build-node
-  touch dist/web.js
   vsce package
 
 package-web: clean (build-server 'browser') build-web
-  touch dist/node.js
   vsce package --target web
 
 package platform vscode-platform: clean build-node
