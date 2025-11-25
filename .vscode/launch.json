@@ -12,6 +12,17 @@
       "args": [
         "--extensionDevelopmentPath=${workspaceFolder}"
       ]
+    },
+    {
+      "name": "Web Extension",
+      "type": "extensionHost",
+      "debugWebWorkerHost": true,
+      "request": "launch",
+      "args": [
+        "--extensionDevelopmentPath=${workspaceFolder}",
+        "--extensionDevelopmentKind=web"
+      ],
+      "outFiles": ["${workspaceFolder}/dist/**/*.js"]
     }
   ]
 }

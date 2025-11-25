@@ -6,7 +6,8 @@
   "publisher": "gplane",
   "license": "MIT",
   "version": "1.13.0",
-  "main": "./dist/extension.js",
+  "main": "./dist/electron.js",
+  "browser": "./dist/web.js",
   "icon": "logo.png",
   "engines": {
     "vscode": "^1.90.0"
@@ -260,18 +261,20 @@
   },
   "scripts": {
     "vscode:prepublish": "pnpm lint && pnpm build",
-    "build": "esbuild ./src/extension.ts --bundle --platform=node --outdir=dist --external:vscode",
-    "watch": "pnpm build --watch",
-    "lint": "tsc --noEmit"
+    "build": "esbuild ./src/electron.ts --bundle --platform=node --outdir=dist --external:vscode",
+    "lint": "tsc --noEmit",
+    "open-in-browser": "vscode-test-web --quality=stable --extensionDevelopmentPath=. ."
   },
   "devDependencies": {
     "@gplane/tsconfig": "^6.2.0",
     "@types/node": "^22.7.3",
     "@types/vscode": "^1.90.0",
     "@types/which": "^3.0.4",
+    "@vscode/test-web": "^0.0.76",
     "esbuild": "^0.24.0",
     "typescript": "^5.9.3",
     "vscode-languageclient": "^9.0.1",
+    "vscode-languageserver": "^9.0.1",
     "which": "^5.0.0"
   }
 }
