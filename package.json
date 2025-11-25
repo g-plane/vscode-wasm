@@ -260,8 +260,6 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "pnpm lint && pnpm build",
-    "build": "esbuild ./src/electron.ts --bundle --platform=node --outdir=dist --external:vscode",
     "lint": "tsc --noEmit",
     "open-in-browser": "vscode-test-web --quality=stable --extensionDevelopmentPath=. ."
   },
