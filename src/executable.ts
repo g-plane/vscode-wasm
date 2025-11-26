@@ -21,10 +21,6 @@ export async function findExecutable(context: vscode.ExtensionContext) {
   } catch {
     // fall through
   }
-
-  vscode.window.showErrorMessage(
-    `No prebuilt wat_server executable exists for your platform; please install it manually.`,
-  )
 }
 
 function getBundledExePath(context: vscode.ExtensionContext) {
