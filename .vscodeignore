@@ -18,6 +18,7 @@ esbuild.js
 **/.vscode-test.*
 .editorconfig
 pnpm-lock.yaml
+pnpm-workspace.yaml
 dprint.json
 Justfile
 binding/**
