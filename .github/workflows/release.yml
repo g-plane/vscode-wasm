@@ -41,6 +41,7 @@ jobs:
           just package-node
           just package-web
           just package 'x86_64-linux' 'linux-x64'
+          just package 'arm64-linux' 'linux-arm64'
           just package 'x86_64-macos' 'darwin-x64'
           just package 'arm64-macos' 'darwin-arm64'
           just package 'x86_64-windows' 'win32-x64'
