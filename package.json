@@ -5,7 +5,7 @@
   "author": "Pig Fang <g-plane@hotmail.com>",
   "publisher": "gplane",
   "license": "MIT",
-  "version": "1.14.2",
+  "version": "1.15.0",
   "main": "./dist/node.js",
   "browser": "./dist/web.js",
   "icon": "logo.png",
