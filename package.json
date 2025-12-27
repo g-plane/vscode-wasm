@@ -75,6 +75,68 @@
           "default": false,
           "scope": "resource"
         },
+        "wasmLanguageTools.format.wrapBeforeLocals": {
+          "description": "Control whether to insert line break before function locals.",
+          "type": "string",
+          "enum": [
+            "never",
+            "overflow",
+            "multiOnly",
+            "always"
+          ],
+          "default": "always",
+          "scope": "resource"
+        },
+        "wasmLanguageTools.format.wrapBeforeFields": {
+          "description": "Control whether to insert line break before struct fields.",
+          "type": "string",
+          "enum": [
+            "never",
+            "overflow",
+            "multiOnly",
+            "always"
+          ],
+          "default": "multiOnly",
+          "scope": "resource"
+        },
+        "wasmLanguageTools.format.wrapBeforeConstExpr": {
+          "description": "Control whether to insert line break before constant expression.",
+          "type": "string",
+          "enum": [
+            "never",
+            "overflow",
+            "multiOnly",
+            "always"
+          ],
+          "default": "always",
+          "scope": "resource"
+        },
+        "wasmLanguageTools.format.multiLineLocals": {
+          "description": "Control how to insert whitespace between multiple locals in a function.",
+          "type": "string",
+          "enum": [
+            "never",
+            "overflow",
+            "smart",
+            "wrap",
+            "always"
+          ],
+          "default": "smart",
+          "scope": "resource"
+        },
+        "wasmLanguageTools.format.multiLineFields": {
+          "description": "Control how to insert whitespace between multiple fields in a struct.",
+          "type": "string",
+          "enum": [
+            "never",
+            "overflow",
+            "smart",
+            "wrap",
+            "always"
+          ],
+          "default": "smart",
+          "scope": "resource"
+        },
         "wasmLanguageTools.format.formatComments": {
           "description": "Control whether whitespace should be inserted at the beginning and end of comments.",
           "type": "boolean",
@@ -89,6 +151,18 @@
         },
         "wasmLanguageTools.lint.unused": {
           "description": "Lint for detecting unused items.",
+          "type": "string",
+          "enum": [
+            "allow",
+            "hint",
+            "warn",
+            "deny"
+          ],
+          "default": "warn",
+          "scope": "resource"
+        },
+        "wasmLanguageTools.lint.unread": {
+          "description": "Lint for detecting unread locals.",
           "type": "string",
           "enum": [
             "allow",
