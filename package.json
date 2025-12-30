@@ -334,7 +334,7 @@
     }
   },
   "scripts": {
-    "lint": "tsc --noEmit",
+    "lint": "tsgo --noEmit",
     "open-in-browser": "vscode-test-web --quality=stable --extensionDevelopmentPath=. ."
   },
   "devDependencies": {
@@ -342,10 +342,10 @@
     "@types/node": "^22.7.3",
     "@types/vscode": "^1.90.0",
     "@types/which": "^3.0.4",
+    "@typescript/native-preview": "7.0.0-dev.20251230.1",
     "@vscode/test-web": "^0.0.76",
     "@vscode/vsce": "^3.7.1",
     "esbuild": "^0.24.0",
-    "typescript": "^5.9.3",
     "vscode-languageclient": "^9.0.1",
     "vscode-languageserver": "^9.0.1",
     "which": "^5.0.0"
