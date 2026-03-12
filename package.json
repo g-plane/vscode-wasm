@@ -312,12 +312,6 @@
         }
       }
     },
-    "configurationDefaults": {
-      "[wat]": {
-        "editor.tabSize": 2,
-        "editor.insertSpaces": true
-      }
-    },
     "commands": [
       {
         "command": "wasmLanguageTools.restart",
