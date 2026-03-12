@@ -345,6 +345,7 @@
     "@typescript/native-preview": "7.0.0-dev.20251230.1",
     "@vscode/test-web": "^0.0.76",
     "@vscode/vsce": "^3.7.1",
+    "@wasm-language-tools/wasm": "^0.0.0",
     "esbuild": "^0.24.0",
     "vscode-languageclient": "^9.0.1",
     "vscode-languageserver": "^9.0.1",

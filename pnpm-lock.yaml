@@ -29,6 +29,9 @@ importers:
       '@vscode/vsce':
         specifier: ^3.7.1
         version: 3.7.1
+      '@wasm-language-tools/wasm':
+        specifier: ^0.0.0
+        version: 0.0.0
       esbuild:
         specifier: ^0.24.0
         version: 0.24.0
@@ -464,6 +467,9 @@ packages:
     resolution: {integrity: sha512-OTm2XdMt2YkpSn2Nx7z2EJtSuhRHsTPYsSK59hr3v8jRArK+2UEoju4Jumn1CmpgoBLGI6ReHLJ/czYltNUW3g==}
     engines: {node: '>= 20'}
     hasBin: true
+
+  '@wasm-language-tools/wasm@0.0.0':
+    resolution: {integrity: sha512-tlUXduOlACZIuRjq0FS0phwqdZr6gTngW73mnWdny774oUSaNLd452wjUoKPUQ6toFtzpj9+w857vqLI6ppcjg==}
 
   accepts@1.3.8:
     resolution: {integrity: sha512-PYAthTa2m2VKxuvSD3DPC/Gy+U+sOA1LAuT8mkmRuvw+NACSaeXEQ+NHcVF7rONl6qcaxV3Uuemwawk+7+SJLw==}
@@ -2271,6 +2277,10 @@ snapshots:
       keytar: 7.9.0
     transitivePeerDependencies:
       - supports-color
+
+  '@wasm-language-tools/wasm@0.0.0':
+    dependencies:
+      vscode-languageserver-protocol: 3.17.5
 
   accepts@1.3.8:
     dependencies:

@@ -32,7 +32,10 @@ export async function activate(context: vscode.ExtensionContext) {
     outputChannel.appendLine(
       `Using server: ${context.asAbsolutePath('dist/wat_service_binding_bg.wasm')}`,
     )
-    serverOptions = { module: context.asAbsolutePath('dist/server-node.js') }
+    serverOptions = {
+      module: context.asAbsolutePath('dist/server-node.js'),
+      args: [context.asAbsolutePath('dist/wat_service_binding_bg.wasm')],
+    }
   }
 
   client = new LanguageClient(
