@@ -1,3 +1,5 @@
-onlyBuiltDependencies:
-  - '@playwright/browser-chromium'
-  - esbuild
+allowBuilds:
+  "@playwright/browser-chromium": false
+  "@vscode/vsce-sign": false
+  esbuild: false
+  keytar: false
