@@ -269,6 +269,18 @@
           "default": "warn",
           "scope": "resource"
         },
+        "wasmLanguageTools.lint.omittedIdxInInstr": {
+          "description": "Lint for omitted idx in some memory and table instructions, such as `i32.load` and `table.get`.",
+          "type": "string",
+          "enum": [
+            "allow",
+            "hint",
+            "warn",
+            "deny"
+          ],
+          "default": "allow",
+          "scope": "resource"
+        },
         "wasmLanguageTools.inlayHint.types": {
           "description": "Inlay hints for indicating types.",
           "type": "boolean",
