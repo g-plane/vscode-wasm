@@ -311,6 +311,16 @@
           "default": "",
           "ignoreSync": true
         },
+        "wasmLanguageTools.executableArgs": {
+          "description": "Command line arguments to the language server executable",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "scope": "resource",
+          "ignoreSync": true
+        },
         "wat.trace.server": {
           "description": "Traces the communication between VS Code and the language server.",
           "type": "string",

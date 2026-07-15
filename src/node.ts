@@ -17,17 +17,14 @@ export async function activate(context: vscode.ExtensionContext) {
   let serverOptions: ServerOptions
   const executablePath = await findExecutable(context)
   if (executablePath) {
-    outputChannel.appendLine(`Using server: ${executablePath}`)
-    serverOptions = {
-      run: {
-        command: executablePath,
-        args: [],
-      },
-      debug: {
-        command: executablePath,
-        args: ['--debug'],
-      },
-    }
+    const args = vscode.workspace.getConfiguration('wasmLanguageTools').get<string[]>(
+      'executableArgs',
+      [],
+    )
+    outputChannel.appendLine(
+      `Starting server: ${executablePath}${args.map((arg) => ` ${arg}`).join('')}`,
+    )
+    serverOptions = { command: executablePath, args }
   } else {
     outputChannel.appendLine(
       `Using server: ${context.asAbsolutePath('dist/wat_service_binding_bg.wasm')}`,
