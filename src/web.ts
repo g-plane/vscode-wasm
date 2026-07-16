@@ -5,7 +5,9 @@ import { showReferences } from './languages.js'
 let client: LanguageClient | undefined
 
 export function activate(context: vscode.ExtensionContext) {
-  const outputChannel = vscode.window.createOutputChannel('WebAssembly Language Tools')
+  const outputChannel = vscode.window.createOutputChannel('WebAssembly Language Tools', {
+    log: true,
+  })
   context.subscriptions.push(outputChannel)
 
   const wasmPath = vscode.Uri.joinPath(context.extensionUri, './dist/wat_service_binding_bg.wasm')
@@ -19,11 +21,11 @@ export function activate(context: vscode.ExtensionContext) {
     client = new LanguageClient(
       'wat',
       'WebAssembly Language Tools',
+      worker,
       {
         documentSelector: [{ language: 'wat' }],
         outputChannel,
       },
-      worker,
     )
     client.start()
   }, { once: true })

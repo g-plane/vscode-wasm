@@ -11,7 +11,9 @@ import { showReferences } from './languages.js'
 let client: LanguageClient | undefined
 
 export async function activate(context: vscode.ExtensionContext) {
-  const outputChannel = vscode.window.createOutputChannel('WebAssembly Language Tools')
+  const outputChannel = vscode.window.createOutputChannel('WebAssembly Language Tools', {
+    log: true,
+  })
   context.subscriptions.push(outputChannel)
 
   let serverOptions: ServerOptions

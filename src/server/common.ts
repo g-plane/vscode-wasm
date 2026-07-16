@@ -53,9 +53,7 @@ export function bindConnection(service: LanguageService, connection: Connection)
   connection.onPrepareRename((params) => service.prepareRename(params))
   connection.onRenameRequest((params) => service.rename(params))
   connection.onSelectionRanges((params) => service.selectionRange(params))
-  // @ts-expect-error LSP spec allows null
   connection.languages.semanticTokens.on((params) => service.semanticTokensFull(params))
-  // @ts-expect-error LSP spec allows null
   connection.languages.semanticTokens.onRange((params) => service.semanticTokensRange(params))
   connection.onSignatureHelp((params) => service.signatureHelp(params))
   connection.languages.typeHierarchy.onPrepare((params) => service.prepareTypeHierarchy(params))

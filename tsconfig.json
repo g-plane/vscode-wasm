@@ -3,6 +3,8 @@
   "compilerOptions": {
     "module": "esnext",
     "moduleResolution": "bundler",
-    "noEmit": true
+    "noEmit": true,
+    "rootDir": "./src",
+    "types": ["node"]
   }
 }
