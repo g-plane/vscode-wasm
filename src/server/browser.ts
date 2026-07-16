@@ -7,7 +7,7 @@ import {
 import { bindConnection } from './common.js'
 
 self.addEventListener('message', async (event) => {
-  await init(event.data)
+  await init({ module_or_path: new URL(event.data) })
   const service = new LanguageService()
   const connection = createConnection(
     new BrowserMessageReader(self),
