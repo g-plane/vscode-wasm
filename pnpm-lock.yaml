@@ -30,8 +30,8 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0
       '@wasm-language-tools/wasm':
-        specifier: ^0.11.0
-        version: 0.11.0
+        specifier: ^0.12.0
+        version: 0.12.0
       esbuild:
         specifier: ^0.28.2
         version: 0.28.2
@@ -573,8 +573,8 @@ packages:
     engines: {node: '>= 22'}
     hasBin: true
 
-  '@wasm-language-tools/wasm@0.11.0':
-    resolution: {integrity: sha512-8+Mgj5lzHmXbhyWMH+vcDdD8fQv+x2MwgPjeyXx3RDix7nFRmXde/CDW3Y6gt2id86+Gy4uCEnKlGhhbGChvsQ==}
+  '@wasm-language-tools/wasm@0.12.0':
+    resolution: {integrity: sha512-AOSbGTx8ci4koOUAESpATMi6drs5A/xTpY55YJ9/XKm5uzPMurwDhAv4oKj2cNu7MrxBx2RFHGRX70U2DW5oLw==}
 
   accepts@1.3.8:
     resolution: {integrity: sha512-PYAthTa2m2VKxuvSD3DPC/Gy+U+sOA1LAuT8mkmRuvw+NACSaeXEQ+NHcVF7rONl6qcaxV3Uuemwawk+7+SJLw==}
@@ -1787,7 +1787,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@wasm-language-tools/wasm@0.11.0':
+  '@wasm-language-tools/wasm@0.12.0':
     dependencies:
       vscode-languageserver-protocol: 3.18.5
 
