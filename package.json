@@ -356,7 +356,7 @@
   "devDependencies": {
     "@gplane/tsconfig": "^6.4.2",
     "@types/node": "^26.1.1",
-    "@types/vscode": "^1.125.0",
+    "@types/vscode": "~1.90.0",
     "@types/which": "^3.0.4",
     "@vscode/test-web": "^0.0.81",
     "@vscode/vsce": "^3.9.2",
