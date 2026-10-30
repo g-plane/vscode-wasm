@@ -354,6 +354,7 @@
     "open-in-browser": "vscode-test-web --quality=stable --extensionDevelopmentPath=. ."
   },
   "devDependencies": {
+    "@gplane/dprint-config": "^1.0.0",
     "@gplane/tsconfig": "^6.4.2",
     "@types/node": "^26.1.1",
     "@types/vscode": "~1.90.0",

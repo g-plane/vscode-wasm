@@ -8,6 +8,9 @@ importers:
 
   .:
     devDependencies:
+      '@gplane/dprint-config':
+        specifier: ^1.0.0
+        version: 1.0.0
       '@gplane/tsconfig':
         specifier: ^6.4.2
         version: 6.4.2
@@ -260,6 +263,9 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@gplane/dprint-config@1.0.0':
+    resolution: {integrity: sha512-sPphwiRQMpIw3qZJ2mEI+DYMGmCsBANemq8ai7pe4/A0BULFvkDG2DYLtzAK8kmSaS2VEVUnh4xYJSKha9zXpw==}
 
   '@gplane/tsconfig@6.4.2':
     resolution: {integrity: sha512-zbjmJf7VrMNWCKHK7ZDDwZLxvV6y8xwltoGgngDpNKKTh01yio2nTFPrvRJz2E1AWvU3fMyw+9CgwLGFIo53fw==}
@@ -2011,6 +2017,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.28.1':
     optional: true
+
+  '@gplane/dprint-config@1.0.0': {}
 
   '@gplane/tsconfig@6.4.2': {}
 
