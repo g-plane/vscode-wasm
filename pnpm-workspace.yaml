@@ -3,3 +3,6 @@ allowBuilds:
   "@vscode/vsce-sign": false
   esbuild: false
   keytar: false
+
+minimumReleaseAgeExclude:
+  - "@wasm-language-tools/wasm"
