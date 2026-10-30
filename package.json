@@ -356,16 +356,16 @@
   "devDependencies": {
     "@gplane/dprint-config": "^1.0.0",
     "@gplane/tsconfig": "^6.4.2",
-    "@types/node": "^26.1.1",
+    "@types/node": "^26.6.6",
     "@types/vscode": "~1.90.0",
     "@types/which": "^3.0.4",
     "@vscode/test-web": "^0.0.81",
-    "@vscode/vsce": "^3.9.2",
+    "@vscode/vsce": "^4.1.0",
     "@wasm-language-tools/wasm": "^0.11.0",
-    "esbuild": "^0.28.1",
+    "esbuild": "^0.28.2",
     "typescript": "^7.0.2",
-    "vscode-languageclient": "^10.1.0",
-    "vscode-languageserver": "^10.1.0",
+    "vscode-languageclient": "^11.0.0",
+    "vscode-languageserver": "^11.0.0",
     "which": "^7.0.0"
   }
 }
